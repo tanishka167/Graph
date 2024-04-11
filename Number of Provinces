@@ -1,4 +1,4 @@
-//Using bfs algorithm
+//Using dfs algorithm
 
 class Solution {
     public static void dfs(int node,ArrayList<ArrayList<Integer>> lst,boolean[] visited){
