@@ -1,0 +1,58 @@
+// using bfs algorithm
+
+class Solution {
+    public int openLock(String[] deadends, String target) {
+        Set<String> seen=new HashSet<>();
+        for(String deadend: deadends){
+            seen.add(deadend);
+        }
+
+        if(seen.contains("0000")){
+            return -1;
+        }
+        Map<Character,List<Character>> map=new HashMap<>(){
+            {
+                put('0',List.of('1','9'));
+                put('1',List.of('2','0'));
+                put('2',List.of('3','1'));
+                put('3',List.of('4','2'));
+                put('4',List.of('5','3'));
+                put('5',List.of('6','4'));
+                put('6',List.of('7','5'));
+                put('7',List.of('8','6'));
+                put('8',List.of('9','7'));
+                put('9',List.of('0','8'));
+            }
+        };
+        Queue<String> q=new LinkedList<>();
+        q.add("0000");
+        seen.add("0000");
+        int turn=0;
+
+        while(!q.isEmpty()){
+            int size=q.size();
+            for(int i=0;i<size;i++){
+                String curr=q.poll();
+                if(curr.equals(target)){
+                    return turn;
+                }
+
+                char[] currState=curr.toCharArray();
+                for(int j=0;j<4;j++){
+                    char currNum=currState[j];
+                    for(char nextNum: map.get(currNum)){
+                        currState[j]=nextNum;
+                        String newState=new String(currState);
+                        if(!seen.contains(newState)){
+                            q.add(newState);
+                            seen.add(newState);
+                        }
+                    }
+                    currState[j]=currNum;
+                }
+            }
+            turn+=1;
+        }
+        return -1;
+    }
+}
