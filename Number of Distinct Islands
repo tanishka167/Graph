@@ -1,0 +1,48 @@
+// using dfs algorithm
+
+
+
+// User function Template for Java
+class Node{
+    int row;
+    int col;
+    Node(int r,int c){
+        this.row=r;
+        this.col=c;
+    }
+}
+class Solution {
+    public static void dfs(int r,int c,int [][]visited,int [][]grid,ArrayList<String> ans,int r0,int c0){
+        int m=grid.length;
+        int n=grid[0].length;
+        visited[r][c]=1;
+        ans.add((r-r0)+","+(c-c0));
+        int [][]direction={{0,1},{0,-1},{1,0},{-1,0}};
+        
+        for(int []dir:direction){
+            int nr=r+dir[0];
+            int nc=c+dir[1];
+            
+            if(nr>=0 && nr<m && nc>=0 && nc<n && visited[nr][nc]==0 && grid[nr][nc]==1){
+                dfs(nr,nc,visited,grid,ans,r0,c0);
+            }
+        }
+    }
+    int countDistinctIslands(int[][] grid) {
+        // Your Code here
+        int m=grid.length;
+        int n=grid[0].length;
+        int [][]visited=new int[m][n];
+        HashSet<ArrayList<String>> set=new HashSet<>();
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(visited[i][j]==0 && grid[i][j]==1){
+                    ArrayList<String> ans=new ArrayList<>();
+                    dfs(i,j,visited,grid,ans,i,j);
+                    set.add(ans);
+                }
+            }
+        }
+        return set.size();
+    }
+}
