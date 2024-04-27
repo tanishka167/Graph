@@ -3,14 +3,7 @@
 
 
 // User function Template for Java
-class Node{
-    int row;
-    int col;
-    Node(int r,int c){
-        this.row=r;
-        this.col=c;
-    }
-}
+
 class Solution {
     public static void dfs(int r,int c,int [][]visited,int [][]grid,ArrayList<String> ans,int r0,int c0){
         int m=grid.length;
