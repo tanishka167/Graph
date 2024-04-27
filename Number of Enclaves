@@ -1,0 +1,72 @@
+// using bfs algorithm
+
+class Node{
+    int row;
+    int col;
+    Node(int r,int c){
+        this.row=r;
+        this.col=c;
+    }
+}
+class Solution {
+    public static void mark(int r,int c,int [][]visited){
+        visited[r][c]=1;
+    }
+    public static boolean isValid(int r,int c,int m,int n){
+        if(r>=0 && r<m && c>=0 && c<n){
+            return true;
+        }
+        return false;
+    }
+    public int numEnclaves(int[][] grid) {
+        int m=grid.length;
+        int n=grid[0].length;
+        int [][]visited=new int[m][n];
+        int [][]direction={{0,1},{0,-1},{1,0},{-1,0}};
+        Queue<Node> q=new LinkedList<>();
+        int land=0;
+
+        for(int i=0;i<n;i++){
+            if(grid[0][i]==1 && visited[0][i]==0){
+                q.add(new Node(0,i));
+                mark(0,i,visited);
+            }
+            if(grid[m-1][i]==1 && visited[m-1][i]==0){
+                q.add(new Node(m-1,i));
+                mark(m-1,i,visited);
+            }
+        }
+        for(int i=0;i<m;i++){
+            if(grid[i][0]==1 && visited[i][0]==0){
+                q.add(new Node(i,0));
+                mark(i,0,visited);
+            }
+            if(grid[i][n-1]==1 && visited[i][n-1]==0){
+                q.add(new Node(i,n-1));
+                mark(i,n-1,visited);
+            }
+        }
+
+        while(!q.isEmpty()){
+            Node curr=q.poll();
+            for(int []dir: direction){
+                int nr=curr.row+dir[0];
+                int nc=curr.col+dir[1];
+
+                if(isValid(nr,nc,m,n) && grid[nr][nc]==1 && visited[nr][nc]==0){
+                    q.add(new Node(nr,nc));
+                    mark(nr,nc,visited);
+                }  
+            }
+        }
+
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(visited[i][j]==0 && grid[i][j]==1){
+                    land+=1;
+                }
+            }
+        }
+        return land;
+    }
+}
