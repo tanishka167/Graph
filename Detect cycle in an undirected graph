@@ -1,0 +1,83 @@
+//using bfs algorithm
+
+
+class Node{
+    int src;
+    int dest;
+    Node(int s,int d){
+        this.dest=d;
+        this.src=s;
+    }
+}
+class Solution {
+    // Function to detect cycle in an undirected graph.
+    public static boolean checkCycle(int i,int V,ArrayList<ArrayList<Integer>> adj,int []visited){
+        Queue<Node> q=new LinkedList<>();
+        q.add(new Node(i,-1));
+        visited[i]=1;
+        
+        while(!q.isEmpty()){
+            Node curr=q.poll();
+            int currSrc=curr.src;
+            int currDest=curr.dest;
+            for(int adjNode: adj.get(currSrc)){
+                if(visited[adjNode]==0){
+                    visited[adjNode]=1;
+                    q.add(new Node(adjNode,currSrc));
+                }
+                else if(currDest!=adjNode){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
+        // Code here
+        Queue<Node> q=new LinkedList<>();
+        int []visited=new int[V];
+        
+        for(int i=0;i<V;i++){
+            if(visited[i]==0){
+                if(checkCycle(i,V,adj,visited)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+
+// using dfs algorithm----------------------------------------------
+
+
+class Solution {
+    public static boolean dfs(int dest,int src,ArrayList<ArrayList<Integer>> adj,int []visited){
+        visited[dest]=1;
+        for(int d:adj.get(dest)){
+            if(visited[d]==0){
+                if(dfs(d,dest,adj,visited)){
+                    return true;
+                }
+            }
+            else if(d!=src){
+                return true;
+            }
+        }
+        return false;
+    }
+    // Function to detect cycle in an undirected graph.
+    public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
+        // Code here
+        int visited[]=new int[V];
+        for(int i=0;i<V;i++){
+            if(visited[i]==0){
+                if(dfs(i,-1,adj,visited)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
